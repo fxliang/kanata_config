@@ -39,7 +39,7 @@ jobs:
       run: |
         git clone -v --depth=1 --recursive https://github.com/jtroo/kanata.git kanata
         pushd kanata
-        cargo build --all --features=gui
+        cargo build --release --all --features=gui
         popd
 
     - name: prepare dist
