@@ -28,7 +28,7 @@ jobs:
             os: windows-latest
             target: x86_64-pc-windows-msvc
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: Swatinem/rust-cache@v2
       with:
         shared-key: "persist-cross-job"
