@@ -1,0 +1,155 @@
+#|
+This minimal config changes Caps Lock to act as Caps Lock on quick tap, but
+if held, it will act as Left Ctrl. It also changes the backtick/grave key to
+act as backtick/grave on quick tap, but change ijkl keys to arrow keys on hold.
+
+This text between the two pipe+octothorpe sequences is a multi-line comment.
+|#
+
+;; Text after double-semicolons are single-line comments.
+
+#|
+One defcfg entry may be added, which is used for configuration key-pairs. These
+configurations change kanata's behaviour at a more global level than the other
+configuration entries.
+|#
+
+(defcfg
+  #|
+  This configuration will process all keys pressed inside of kanata, even if
+  they are not mapped in defsrc. This is so that certain actions can activate
+  at the right time for certain input sequences. By default, unmapped keys are
+  not processed through kanata due to a Windows issue related to AltGr. If you
+  use AltGr in your keyboard, you will likely want to follow the simple.kbd
+  file while unmapping      and ralt from defsrc.
+  |#
+
+  ;; for listary set no
+  ;; don't process keys unmapped
+  process-unmapped-keys no
+)
+
+
+(defalias
+  ;; space key in layer base
+  ;; hold space more than 300 ms to toggle layer1
+  spc0 (tap-hold 300 300 spc (layer-toggle layer1)) 
+
+  ;; alias keys in layer1
+  s1 S-1  ;; @s1 as !  
+  s2 S-2  ;; @s2 as @  
+  s3 S-3  ;; @s3 as #  
+  s4 S-4  ;; @s4 as $  
+  s5 S-5  ;; @s5 as %  
+  s6 S-6  ;; @s6 as ^  
+  s7 S-7  ;; @s7 as &  
+  s8 S-8  ;; @s8 as *  
+  s9 S-9  ;; @s9 as (  
+  s0 S-0  ;; @s0 as )  
+  scbl S-[ ;; @scbl as {
+  scbr S-] ;; @scbr as }
+
+  ;; left shift: tap 2 hold lsft
+  ;; right shift: tap 3 hold rsft
+  ;; lsm (tap-hold 300 300 2 lsft)
+  ;; rsm (tap-hold 300 300 3 rsft)
+  ;; cpm (tap-hold 300 300 4 caps)
+  ;; sf (tap-hold 300 300 s lsft) ;;hold s more than 300ms to act as left_shift
+
+  ;; chordings
+  ca (chord chordings a)
+  cs (chord chordings s)
+  cd (chord chordings d)
+  cf (chord chordings f)
+  cg (chord chordings g)
+  ch (chord chordings h)
+  cj (chord chordings j)
+  ck (chord chordings k)
+  cl (chord chordings l)
+  cw (chord chordings w)
+  ce (chord chordings e)
+  cr (chord chordings r)
+  cu (chord chordings u)
+  ci (chord chordings i)
+  cc (chord chordings c)
+  cv (chord chordings v)
+  cb (chord chordings b)
+  cn (chord chordings n)
+  cm (chord chordings m)
+  c, (chord chordings ,)
+)
+
+(defchords chordings 50
+  (a) a
+  (s) s
+  (d) d
+  (s d) lsft
+  (f) f
+  (d f) @s9
+  (a s d f) caps
+  (g) g
+  (h) h
+  (g h) S-=
+
+  (j) j
+  (k) k
+  (j k) @s0
+  (k l) rsft
+  (l) l
+
+  (w) w
+  (e) e
+  (w e) f2
+  (r) r
+  (e r) S-[
+
+  (u  ) u
+  (  i) i
+  (u i) S-]
+
+  (c  ) c
+  (  v) v
+  (c v) [
+
+  (b) b
+  (n) n
+  (m) m
+  (b n) -
+  (  ,) ,
+  (m ,) ]
+)
+
+(defseq git-status (g s t))
+(deffakekeys git-status (macro g i t spc s t a t u s))
+
+;; for listary delete lctl and rctl, not to map ctl keys
+;; keyboard layout definition
+(defsrc
+  esc     f1      f2     f3     f4     f5     f6   f7     f8     f9     f10    f11  f12                    ssrq slck pause
+  grv     1       2      3      4      5      6    7      8      9      0      -    =         bspc         ins  home pgup      nlck kp/  kp*  kp-
+  tab     q       w      e      r      t      y    u      i      o      p      [    ]         ret          del  end  pgdn      kp7  kp8  kp9  kp+
+  caps    a       s      d      f      g      h    j      k      l      ;      '    \                                          kp4  kp5  kp6
+  lsft    z       x      c      v      b      n    m      ,      .      /           rsft                         up            kp1  kp2  kp3  kprt
+          lmet    lalt                 spc                       ralt   rmet                               left down rght      kp0  kp.
+)
+
+;; default layer
+(deflayer default
+  esc     f1      f2     f3     f4     f5     f6   f7     f8     f9     f10    f11  f12                    ssrq slck pause
+  grv     1       2      3      4      5      6    7      8      9      0      -    =         bspc         ins  home pgup      nlck kp/  kp*  kp-
+  tab     q       @cw    @ce    @cr    t      y    @cu    @ci    o      p      [    ]         ret          del  end  pgdn      kp7  kp8  kp9  kp+
+  caps    @ca     @cs    @cd    @cf    @cg    @ch  @cj    @ck    @cl    ;      '    \                                          kp4  kp5  kp6
+  lsft    z       x      @cc    @cv    @cb    @cn  @cm    @c,    .      /           rsft                         up            kp1  kp2  kp3  kprt
+          lmet    lalt                 @spc0                     ralt   rmet                               left down rght      kp0  kp.
+)
+
+;; layer1
+(deflayer layer1
+  esc     f1      f2     f3     f4     f5     f6   f7     f8     f9     f10    f11  f12                    ssrq slck pause
+  grv     1       2      3      4      5      6    7      8      9      0      -    =         bspc         ins  home pgup      nlck kp/  kp*  kp-
+  tab     @s1     @s2    @s3    @s4    @s5    @s6  @s7    @s8    @s9    @s0    [    ]         ret          del  end  pgdn      kp7  kp8  kp9  kp+
+  caps    1       2      3      4      5      6    7      8      9      0      '    \                                          kp4  kp5  kp6
+  lsft    z       x      c      v      b      n    m      ,      .      /           rsft                         up            kp1  kp2  kp3  kprt
+          lmet    lalt                 spc                       ralt   rmet                               left down rght      kp0  kp.
+)
+
