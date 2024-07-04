@@ -1,0 +1,59 @@
+name: ci
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '![0-9]+.*'
+    paths:
+      - '**/**'
+      - '!*.md'
+      - '!.gitignore'
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: "-Dwarnings"
+
+jobs:
+
+  build-on-windows:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - build: windows
+            os: windows-latest
+            target: x86_64-pc-windows-msvc
+    steps:
+    - uses: actions/checkout@v3
+    - uses: Swatinem/rust-cache@v2
+      with:
+        shared-key: "persist-cross-job"
+        workspaces: ./
+    - run: rustup component add clippy
+
+    - name: Run build gui
+      run: |
+        git clone -v --depth=1 --recursive https://github.com/jtroo/kanata.git kanata
+        pushd kanata
+        cargo build --all --features=gui
+        popd
+
+    - name: prepare dist
+      run: |
+        copy .\kanata\target\release\kanata.exe .\
+        copy .\kanata\cfg_samples\*  .\cfg_samples\
+
+    - name: upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: kanata-dist
+        if-no-files-found: error
+        path: |
+          ./kanata.exe
+          ./cfg_samples/*
+          ./min.kbd
+          ./run-kanata.bat
