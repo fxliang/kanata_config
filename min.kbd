@@ -27,6 +27,7 @@ configuration entries.
   ;; for listary set no
   ;; don't process keys unmapped
   process-unmapped-keys no
+  log-layer-changes no
 )
 
 
