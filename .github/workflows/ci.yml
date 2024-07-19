@@ -35,16 +35,19 @@ jobs:
         workspaces: ./
     - run: rustup component add clippy
 
-    - name: Run build gui
+    - name: Build kanata
       run: |
         git clone -v --depth=1 --recursive https://github.com/jtroo/kanata.git kanata
         pushd kanata
-        cargo build --release --all --features=cmd,win_llhook_read_scancodes,win_sendinput_send_scancodes,gui
+        cargo build --release --all --features=gui
+        copy .\target\release\kanata.exe .\target\release\kanata-ui.exe
+        cargo build --release --all
         popd
 
     - name: prepare dist
       run: |
         copy .\kanata\target\release\kanata.exe .\
+        copy .\kanata\target\release\kanata-ui.exe .\
         copy .\kanata\cfg_samples\*  .\cfg_samples\
 
     - name: upload artifacts
@@ -54,6 +57,8 @@ jobs:
         if-no-files-found: error
         path: |
           ./kanata.exe
+          ./kanata-ui.exe
           ./cfg_samples/*
           ./min.kbd
-          ./run-kanata.bat
+          ./run-kanata.ps1
+          ./run-kanata-ui.ps1
