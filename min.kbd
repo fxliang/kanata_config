@@ -24,7 +24,7 @@ configuration entries.
   file while unmapping      and ralt from defsrc.
   |#
 
-  ;; for listary set no
+  ;; for listary set no, after 6.3.0.78, it doesn't matter
   ;; don't process keys unmapped
   process-unmapped-keys no
   log-layer-changes no
@@ -131,7 +131,7 @@ configuration entries.
   tab     q       w      e      r      t      y    u      i      o      p      [    ]         ret          del  end  pgdn      kp7  kp8  kp9  kp+
   caps    a       s      d      f      g      h    j      k      l      ;      '    \                                          kp4  kp5  kp6
   lsft    z       x      c      v      b      n    m      ,      .      /           rsft                         up            kp1  kp2  kp3  kprt
-          lmet    lalt                 spc                       ralt   rmet                               left down rght      kp0  kp.
+  lctl    lmet    lalt                 spc                       ralt   rmet        rctl                   left down rght      kp0  kp.
 )
 
 ;; default layer
@@ -141,7 +141,7 @@ configuration entries.
   tab     q       @cw    @ce    @cr    t      y    @cu    @ci    o      p      [    ]         ret          del  end  pgdn      kp7  kp8  kp9  kp+
   caps    @ca     @cs    @cd    @cf    @cg    @ch  @cj    @ck    @cl    ;      '    \                                          kp4  kp5  kp6
   lsft    z       x      @cc    @cv    @cb    @cn  @cm    @c,    .      /           rsft                         up            kp1  kp2  kp3  kprt
-          lmet    lalt                 @spc0                     ralt   rmet                               left down rght      kp0  kp.
+  lctl    lmet    lalt                 @spc0                     ralt   rmet        rctl                   left down rght      kp0  kp.
 )
 
 ;; layer1
@@ -151,6 +151,6 @@ configuration entries.
   tab     @s1     @s2    @s3    @s4    @s5    @s6  @s7    @s8    @s9    @s0    [    ]         ret          del  end  pgdn      kp7  kp8  kp9  kp+
   caps    1       2      3      4      5      6    7      8      9      0      '    \                                          kp4  kp5  kp6
   lsft    z       x      c      v      b      n    m      ,      .      /           rsft                         up            kp1  kp2  kp3  kprt
-          lmet    lalt                 spc                       ralt   rmet                               left down rght      kp0  kp.
+  lctl    lmet    lalt                 spc                       ralt   rmet        rctl                   left down rght      kp0  kp.
 )
 
