@@ -41,7 +41,7 @@ jobs:
         pushd kanata
         cargo build --release --features gui,zippychord
         copy .\target\release\kanata.exe .\target\release\kanata-ui.exe
-        cargo build --release zippychord
+        cargo build --release --features zippychord
         popd
 
     - name: prepare dist
