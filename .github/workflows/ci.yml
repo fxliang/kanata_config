@@ -39,9 +39,9 @@ jobs:
       run: |
         git clone -v --depth=1 --recursive https://github.com/jtroo/kanata.git kanata
         pushd kanata
-        cargo build --release --features gui
+        cargo build --release --features gui,zippychord
         copy .\target\release\kanata.exe .\target\release\kanata-ui.exe
-        cargo build --release
+        cargo build --release zippychord
         popd
 
     - name: prepare dist

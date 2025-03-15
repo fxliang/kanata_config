@@ -36,6 +36,8 @@ configuration entries.
   ;; hold space more than 300 ms to toggle layer1
   spc0 (tap-hold 300 300 spc (layer-toggle layer1)) 
 
+  caps0 (tap-hold 300 300 esc caps)
+
   ;; alias keys in layer1
   s1 S-1  ;; @s1 as !  
   s2 S-2  ;; @s2 as @  
@@ -49,6 +51,12 @@ configuration entries.
   s0 S-0  ;; @s0 as )  
   scbl S-[ ;; @scbl as {
   scbr S-] ;; @scbr as }
+
+  chr (layer-switch chords)
+  dft (layer-switch default)
+  chords-default (tap-hold 300 300 @dft @chr)
+  ;;combolayer (layer-switch combo-layer)
+  ;;combo (tab-hold 300 300 @dft @combolayer)
 
   ;; left shift: tap 2 hold lsft
   ;; right shift: tap 3 hold rsft
@@ -80,77 +88,121 @@ configuration entries.
   c, (chord chordings ,)
 )
 
-(defchords chordings 50
-  (a) a
-  (s) s
-  (d) d
-  (s d) lsft
-  (f) f
-  (d f) @s9
-  (a s d f) caps
-  (g) g
-  (h) h
-  (g h) S-=
+(defchords chordings 100
+  (a) a			             ;;@ca to output a
+  (s) s			             ;;@cs to output s
+  (d) d			             ;;@cd to output d
+  (s d) lsft			       ;;@cs + @cd to output lsft
+  (f) f			             ;;@cf to output f
+  (d f) @s9			         ;;@cd + @cf to output @s9
+  (a s d f) caps         ;;@ca + @cs + @cd + @cf to output caps
+  (g) g			             ;;@cg to output g
+  (h) h			             ;;@ch to output h
+  (g h) S-=			         ;;@cg + @ch to output S-=
 
-  (j) j
-  (k) k
-  (j k) @s0
-  (k l) rsft
-  (l) l
+  (j) j			             ;;@cj to output j
+  (k) k			             ;;@ck to output k
+  (j k) @s0			         ;;@cj + @ck to output @s0
+  (k l) rsft			       ;;@ck + @cl to output rsft
+  (l) l			             ;;@cl to output l
 
-  (w) w
-  (e) e
-  (w e) f2
-  (r) r
-  (e r) S-[
+  (w) w                  ;; @cw to output w
+  (e) e                  ;; @ce to output e
+  (w e) f2               ;; @cw + @ce to output f2
+  (r) r                  ;; @cr to output r
+  (e r) S-[              ;; @ce + @cr to output {
 
-  (u  ) u
-  (  i) i
-  (u i) S-]
+  (u  ) u                ;; @cu to output u
+  (  i) i                ;; @ci to output i
+  (u i) S-]              ;; @cu + @ci to output }
 
-  (c  ) c
-  (  v) v
-  (c v) [
+  (c  ) c                ;; @cc to output c
+  (  v) v                ;; @cv to output v
+  (c v) [                ;; @cc + @cv to output [
+  (c h) @chords-default  ;; @chords-default to switch between chords and default
 
-  (b) b
-  (n) n
-  (m) m
-  (b n) -
-  (  ,) ,
-  (m ,) ]
+  ;;(c b) @combo
+  (b) b                  ;; @cb to output b
+  (n) n                  ;; @cn to output n
+  (m) m                  ;; @cm to output m
+  (b n) -                ;; @cb + @cn to output -
+  (  ,) ,                ;; @c, to output ,
+  (m ,) ]                ;; @cm + @c, to output ]
 )
 
 (defseq git-status (g s t))
 (deffakekeys git-status (macro g i t spc s t a t u s))
 
+;; ----------------------------------------------------------------------------
+;; ----------------------------------------------------------------------------
 ;; for listary delete lctl and rctl, not to map ctl keys
 ;; keyboard layout definition
 (defsrc
-  esc     f1      f2     f3     f4     f5     f6   f7     f8     f9     f10    f11  f12                    ssrq slck pause
-  grv     1       2      3      4      5      6    7      8      9      0      -    =         bspc         ins  home pgup      nlck kp/  kp*  kp-
-  tab     q       w      e      r      t      y    u      i      o      p      [    ]         ret          del  end  pgdn      kp7  kp8  kp9  kp+
-  caps    a       s      d      f      g      h    j      k      l      ;      '    \                                          kp4  kp5  kp6
-  lsft    z       x      c      v      b      n    m      ,      .      /           rsft                         up            kp1  kp2  kp3  kprt
-  lctl    lmet    lalt                 spc                       ralt   rmet        rctl                   left down rght      kp0  kp.
+  esc       f1      f2     f3     f4     f5     f6   f7     f8     f9     f10    f11  f12              ;;      ssrq slck pause
+  grv       1       2      3      4      5      6    7      8      9      0      -    =         bspc   ;;      ins  home pgup      nlck kp/  kp*  kp-
+  tab       q       w      e      r      t      y    u      i      o      p      [    ]         ret    ;;      del  end  pgdn      kp7  kp8  kp9  kp+
+  caps      a       s      d      f      g      h    j      k      l      ;      '    \                ;;                          kp4  kp5  kp6
+  lsft      z       x      c      v      b      n    m      ,      .      /           rsft             ;;            up            kp1  kp2  kp3  kprt
+  lctl      lmet    lalt                 spc                       ralt   rmet        rctl             ;;      left down rght      kp0  kp.
 )
-
+;; ----------------------------------------------------------------------------
 ;; default layer
 (deflayer default
-  esc     f1      f2     f3     f4     f5     f6   f7     f8     f9     f10    f11  f12                    ssrq slck pause
-  grv     1       2      3      4      5      6    7      8      9      0      -    =         bspc         ins  home pgup      nlck kp/  kp*  kp-
-  tab     q       @cw    @ce    @cr    t      y    @cu    @ci    o      p      [    ]         ret          del  end  pgdn      kp7  kp8  kp9  kp+
-  caps    @ca     @cs    @cd    @cf    @cg    @ch  @cj    @ck    @cl    ;      '    \                                          kp4  kp5  kp6
-  lsft    z       x      @cc    @cv    @cb    @cn  @cm    @c,    .      /           rsft                         up            kp1  kp2  kp3  kprt
-  lctl    lmet    lalt                 @spc0                     ralt   rmet        rctl                   left down rght      kp0  kp.
+  esc       f1      f2     f3     f4     f5     f6   f7     f8     f9     f10    f11  f12              ;;      ssrq slck pause
+  grv       1       2      3      4      5      6    7      8      9      0      -    =         bspc   ;;      ins  home pgup      nlck kp/  kp*  kp-
+  tab       q       w      e      r      t      y    u      i      o      p      [    ]         ret    ;;      del  end  pgdn      kp7  kp8  kp9  kp+
+  caps      a       s      d      f      g      @ch  j      k      l      ;      '    \                ;;                          kp4  kp5  kp6
+  lsft      z       x      @cc    v      @cb    n    m      ,      .      /           rsft             ;;            up            kp1  kp2  kp3  kprt
+  lctl      lmet    lalt                 @spc0                     ralt   rmet        rctl             ;;      left down rght      kp0  kp.
 )
-
+;; ----------------------------------------------------------------------------
+;; chords layer
+(deflayer (chords icon chord.png )
+  esc       f1      f2     f3     f4     f5     f6   f7     f8     f9     f10    f11  f12              ;;      ssrq slck pause
+  grv       1       2      3      4      5      6    7      8      9      0      -    =         bspc   ;;      ins  home pgup      nlck kp/  kp*  kp-
+  tab       q       @cw    @ce    @cr    t      y    @cu    @ci    o      p      [    ]         ret    ;;      del  end  pgdn      kp7  kp8  kp9  kp+
+  @caps0    @ca     @cs    @cd    @cf    @cg    @ch  @cj    @ck    @cl    ;      '    \                ;;                          kp4  kp5  kp6
+  lsft      z       x      @cc    @cv    @cb    @cn  @cm    @c,    .      /           rsft             ;;            up            kp1  kp2  kp3  kprt
+  lctl      lmet    lalt                 spc                       ralt   rmet        rctl             ;;      left down rght      kp0  kp.
+)
+;; ----------------------------------------------------------------------------
 ;; layer1
 (deflayer layer1
-  esc     f1      f2     f3     f4     f5     f6   f7     f8     f9     f10    f11  f12                    ssrq slck pause
-  grv     1       2      3      4      5      6    7      8      9      0      -    =         bspc         ins  home pgup      nlck kp/  kp*  kp-
-  tab     @s1     @s2    @s3    @s4    @s5    @s6  @s7    @s8    @s9    @s0    [    ]         ret          del  end  pgdn      kp7  kp8  kp9  kp+
-  caps    1       2      3      4      5      6    7      8      9      0      '    \                                          kp4  kp5  kp6
-  lsft    z       x      c      v      b      n    m      ,      .      /           rsft                         up            kp1  kp2  kp3  kprt
-  lctl    lmet    lalt                 spc                       ralt   rmet        rctl                   left down rght      kp0  kp.
+  esc      f1      f2     f3     f4     f5     f6   f7     f8     f9     f10    f11  f12               ;;     ssrq slck pause
+  grv      1       2      3      4      5      6    7      8      9      0      -    =         bspc    ;;     ins  home pgup      nlck kp/  kp*  kp-
+  tab      @s1     @s2    @s3    @s4    @s5    @s6  @s7    @s8    @s9    @s0    [    ]         ret     ;;     del  end  pgdn      kp7  kp8  kp9  kp+
+  @caps0   1       2      3      4      5      6    7      8      9      0      '    \                 ;;                         kp4  kp5  kp6
+  lsft     z       x      c      v      b      n    m      ,      .      /           rsft              ;;           up            kp1  kp2  kp3  kprt
+  lctl     lmet    lalt                 spc                       ralt   rmet        rctl              ;;     left down rght      kp0  kp.
 )
 
+#|
+;; This is a sample for US international layout.
+(defzippy-experimental
+  zippy.txt
+  on-first-press-chord-deadline 500
+  idle-reactivate-time          500
+  smart-space none
+  ;;smart-space-punctuation (? ! . , ; :)
+  output-character-mappings (
+    ! S-1
+    ? S-/
+    % S-5
+    "(" S-9
+    ")" S-0
+    : S-;
+    < S-,
+    > S-.
+    r#"""# S-'
+    | S-\
+    _ S--
+
+    ;; In case you use dead keys or compose keys
+    ;; where multiple keys are pressed
+    ;; to produce a single backspaceable symbol,
+    ;; use no-erase or single-output
+    ;; ’ (no-erase `)
+    ;; é (single-output ' e)
+  )
+)
+|#
